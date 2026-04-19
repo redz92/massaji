@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Māssaji — Massage à Domicile · Marrakech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:        #8B9A78;
+      --sage-dark:   #5E6F50;
+      --sage-deeper: #3D4D33;
+      --sage-light:  #EBF0E4;
+      --cream:       #F5F0E6;
+      --cream-warm:  #EDE5D3;
+      --gold:        #C8A96E;
+      --charcoal:    #2A2A26;
+      --white:       #FAFAF5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 56px;
+      height: 80px;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(250,250,245,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(139,154,120,0.2);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-img {
+      height: 44px;
+      width: auto;
+    }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: var(--cream);
+      transition: color 0.4s;
+    }
+    nav.scrolled .nav-logo-text { color: var(--sage-dark); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(245,240,230,0.85);
+      transition: color 0.3s;
+    }
+    nav.scrolled .nav-links a { color: var(--sage-dark); }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 24px;
+      border: 1px solid rgba(245,240,230,0.6);
+      color: var(--cream);
+      transition: all 0.3s;
+    }
+    nav.scrolled .nav-cta {
+      border-color: var(--sage);
+      color: var(--sage-dark);
+    }
+    .nav-cta:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white);
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--sage-deeper);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, rgba(62,77,51,0.95) 0%, rgba(94,111,80,0.75) 50%, rgba(139,154,120,0.6) 100%);
+    }
+
+    /* Ornamental line pattern */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,240,230,0.04) 0%, transparent 70%);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: var(--cream);
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+
+    .hero-logo-wrap {
+      margin-bottom: 32px;
+    }
+    .hero-logo-wrap img {
+      height: 140px;
+      width: auto;
+      filter: brightness(0) invert(1) sepia(1) saturate(0.3) brightness(1.1);
+    }
+    /* Fallback SVG logo if PDF doesn't render */
+    .hero-logo-svg {
+      display: none;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 300;
+      letter-spacing: 8px;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 2.2vw, 22px);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245,240,230,0.75);
+      margin-bottom: 52px;
+      letter-spacing: 1px;
+    }
+
+    .hero-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 52px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 44px;
+      background: transparent;
+      border: 1px solid rgba(245,240,230,0.5);
+      color: var(--cream);
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .hero-btn:hover::before { transform: scaleX(1); }
+    .hero-btn span { position: relative; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(245,240,230,0.5);
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(245,240,230,0.5), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* ─── INTRO ───────────────────────────────────────── */
+    .intro {
+      padding: 120px 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .intro-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(34px, 3.5vw, 52px);
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+    }
+    .intro-text h2 em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .intro-text p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: #6B6B60;
+      margin-bottom: 20px;
+    }
+
+    .intro-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+    .intro-tag {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border: 1px solid var(--sage-light);
+      color: var(--sage-dark);
+    }
+
+    .intro-visual {
+      position: relative;
+    }
+    .intro-card {
+      background: var(--sage);
+      padding: 64px 48px;
+      color: var(--cream);
+      text-align: center;
+    }
+    .intro-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: rgba(245,240,230,0.2);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .intro-card-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .intro-card-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .intro-cards-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 2px;
+    }
+    .intro-card-sm {
+      background: var(--sage-light);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .intro-card-sm-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--sage-dark);
+      line-height: 1;
+    }
+    .intro-card-sm-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #7A8A6A;
+      margin-top: 6px;
+    }
+
+    /* ─── SECTION DIVIDER ────────────────────────────── */
+    .section-header {
+      text-align: center;
+      padding: 80px 24px 60px;
+    }
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 58px);
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+    .section-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 auto;
+    }
+    .section-rule::before,
+    .section-rule::after {
+      content: '';
+      width: 60px;
+      height: 1px;
+      background: var(--sage-light);
+    }
+    .section-rule-diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ─── PRESTATIONS ────────────────────────────────── */
+    .prestations {
+      background: var(--white);
+      padding: 0 40px 100px;
+    }
+
+    .prestation-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .prestation-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      background: var(--cream);
+    }
+
+    .prestation-card-inner {
+      padding: 48px 40px 44px;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .prestation-card:hover .prestation-card-inner {
+      transform: translateY(-4px);
+    }
+
+    .prestation-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+      transform-origin: left;
+    }
+    .prestation-card:hover::before { transform: scaleX(1); }
+
+    /* Alternate card colors */
+    .prestation-card:nth-child(1) { background: var(--cream); }
+    .prestation-card:nth-child(2) { background: var(--sage-light); }
+    .prestation-card:nth-child(3) { background: var(--cream); }
+    .prestation-card:nth-child(4) { background: var(--cream-warm); }
+    .prestation-card:nth-child(5) { background: var(--sage); }
+    .prestation-card:nth-child(5) .prestation-card-inner { --text: var(--cream); }
+    .prestation-card:nth-child(6) { background: var(--cream-warm); }
+
+    .prestation-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      font-weight: 300;
+      color: rgba(139,154,120,0.2);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .prestation-card:nth-child(5) .prestation-num {
+      color: rgba(245,240,230,0.15);
+    }
+
+    .prestation-category {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .prestation-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .prestation-card:nth-child(5) .prestation-name { color: var(--cream); }
+
+    .prestation-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: #7A7A6E;
+      margin-bottom: 28px;
+    }
+    .prestation-card:nth-child(5) .prestation-desc { color: rgba(245,240,230,0.7); }
+
+    .prestation-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(139,154,120,0.2);
+    }
+    .prestation-card:nth-child(5) .prestation-meta {
+      border-top-color: rgba(245,240,230,0.2);
+    }
+
+    .prestation-duration {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #9A9A8E;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prestation-card:nth-child(5) .prestation-duration { color: rgba(245,240,230,0.5); }
+    .prestation-duration::before {
+      content: '';
+      display: inline-block;
+      width: 14px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .prestation-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--sage-dark);
+    }
+    .prestation-card:nth-child(5) .prestation-price { color: var(--gold); }
+
+    .prestation-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+    .prestation-card:nth-child(5) .prestation-link { color: var(--cream); }
+    .prestation-link::after {
+      content: '→';
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+    .prestation-card:hover .prestation-link { gap: 14px; }
+    .prestation-card:hover .prestation-link::after { transform: translateX(4px); }
+
+    /* ─── PROCESS ─────────────────────────────────────── */
+    .process {
+      background: var(--sage-deeper);
+      padding: 100px 56px;
+      color: var(--cream);
+    }
+    .process .section-title { color: var(--cream); }
+    .process .section-rule::before,
+    .process .section-rule::after { background: rgba(245,240,230,0.15); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      max-width: 1280px;
+      margin: 60px auto 0;
+    }
+    .process-step {
+      padding: 48px 36px;
+      border-left: 1px solid rgba(245,240,230,0.08);
+      position: relative;
+    }
+    .process-step:first-child { border-left: none; }
+
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      font-weight: 300;
+      color: rgba(245,240,230,0.06);
+      line-height: 1;
+      position: absolute;
+      top: 32px;
+      right: 24px;
+    }
+    .step-icon {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--gold);
+      font-size: 18px;
+    }
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .step-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245,240,230,0.55);
+    }
+
+    /* ─── CTA BANNER ──────────────────────────────────── */
+    .cta-banner {
+      background: var(--cream-warm);
+      padding: 100px 56px;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 60px);
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .cta-banner h2 em {
+      font-style: italic;
+      color: var(--sage);
+    }
+    .cta-banner p {
+      font-size: 14px;
+      font-weight: 300;
+      color: #7A7A6E;
+      margin-bottom: 44px;
+      letter-spacing: 0.5px;
+    }
+    .cta-btn {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 18px 52px;
+      background: var(--sage);
+      color: var(--cream);
+      transition: all 0.3s;
+    }
+    .cta-btn:hover {
+      background: var(--sage-dark);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      padding: 64px 56px 40px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(245,240,230,0.08);
+    }
+    .footer-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+    .footer-brand-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245,240,230,0.45);
+    }
+    .footer-col-title {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(245,240,230,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 32px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(245,240,230,0.25);
+      letter-spacing: 1px;
+    }
+    .footer-city {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(245,240,230,0.3);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .prestation-grid { grid-template-columns: repeat(2, 1fr); }
+      .intro { grid-template-columns: 1fr; gap: 48px; }
+      .process-steps { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero-title { letter-spacing: 4px; }
+      .prestations { padding: 0 16px 80px; }
+      .prestation-grid { grid-template-columns: 1fr; }
+      .process { padding: 80px 24px; }
+      .process-steps { grid-template-columns: 1fr; }
+      .cta-banner { padding: 80px 24px; }
+      footer { padding: 48px 24px 32px; }
+      .footer-inner { grid-template-columns: 1fr; gap: 40px; }
+      .intro { padding: 80px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-img" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" fill="#8B9A78"/>
+      <!-- Simplified M monogram -->
+      <path d="M8 32 L8 14 L15 24 L22 14 L29 24 L36 14 L36 32" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 12 C10 8 14 7 16 10 L22 20 L28 10 C30 7 34 8 36 12" stroke="#F5F0E6" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-logo-text">Māssaji</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#prestations">Prestations</a></li>
+    <li><a href="#process">Déroulement</a></li>
+    <li><a href="reserver.html">Réserver</a></li>
+  </ul>
+  <a href="reserver.html" class="nav-cta">Réserver</a>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Massage à Domicile</p>
+
+    <!-- Inline logo recreation -->
+    <div class="hero-logo-wrap">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:130px;width:auto;">
+        <!-- Outer arch left -->
+        <path d="M52 130 L52 80 C52 55 68 42 80 52 L100 75" stroke="#F5F0E6" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Outer arch right -->
+        <path d="M148 130 L148 80 C148 55 132 42 120 52 L100 75" stroke="#F5F0E6" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Inner left stroke -->
+        <path d="M72 130 L72 90 C72 72 82 64 90 70 L100 82" stroke="#F5F0E6" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Inner right stroke -->
+        <path d="M128 130 L128 90 C128 72 118 64 110 70 L100 82" stroke="#F5F0E6" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Center V -->
+        <path d="M90 70 L100 90 L110 70" stroke="#F5F0E6" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Left curl top -->
+        <path d="M52 80 C50 65 44 58 42 60" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M52 80 C56 64 60 56 58 52" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Right curl top -->
+        <path d="M148 80 C150 65 156 58 158 60" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M148 80 C144 64 140 56 142 52" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Wordmark -->
+        <text x="100" y="165" font-family="Cormorant Garamond, Georgia, serif" font-size="26" font-weight="300" text-anchor="middle" fill="#F5F0E6" letter-spacing="3">Māssaji</text>
+      </svg>
+    </div>
+
+    <p class="hero-subtitle">L'art du massage, chez vous</p>
+    <div class="hero-divider"></div>
+    <a href="#prestations" class="hero-btn"><span>Découvrir nos prestations</span></a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+
+<!-- ─── INTRO ─────────────────────────────────────────── -->
+<section class="intro">
+  <div class="intro-text">
+    <h2>Un rituel de bien-être<br /><em>dans votre espace</em></h2>
+    <p>Māssaji vous apporte l'expertise d'un spa de luxe directement à domicile. Nos thérapeutes certifiés se déplacent à Marrakech et ses environs, équipés de tout le nécessaire pour votre confort.</p>
+    <p>Chaque soin est personnalisé selon vos besoins, dans la sérénité et l'intimité de votre propre espace de vie.</p>
+    <div class="intro-tags">
+      <span class="intro-tag">Thérapeutes certifiés</span>
+      <span class="intro-tag">Huiles premium</span>
+      <span class="intro-tag">Disponible 7j/7</span>
+      <span class="intro-tag">Marrakech & environs</span>
+    </div>
+  </div>
+  <div class="intro-visual">
+    <div class="intro-card">
+      <div class="intro-card-num">∞</div>
+      <div class="intro-card-label">Notre promesse</div>
+      <div class="intro-card-text">"Le luxe de se sentir bien,<br />sans quitter son havre de paix"</div>
+    </div>
+    <div class="intro-cards-row">
+      <div class="intro-card-sm">
+        <div class="intro-card-sm-num">7j/7</div>
+        <div class="intro-card-sm-label">Disponibilité</div>
+      </div>
+      <div class="intro-card-sm">
+        <div class="intro-card-sm-num">60+</div>
+        <div class="intro-card-sm-label">Clients satisfaits</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRESTATIONS ────────────────────────────────────── -->
+<section id="prestations">
+  <div class="section-header">
+    <p class="section-eyebrow">Nos Soins</p>
+    <h2 class="section-title">Choisissez votre<br /><em>rituel bien-être</em></h2>
+    <div class="section-rule">
+      <div class="section-rule-diamond"></div>
+    </div>
+  </div>
+
+  <div class="prestations">
+    <div class="prestation-grid">
+
+      <!-- 1 -->
+      <a href="reserver.html?prestation=massage-relaxant" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">01</div>
+          <div class="prestation-category">Détente & Relaxation</div>
+          <h3 class="prestation-name">Massage Relaxant</h3>
+          <p class="prestation-desc">Un voyage sensoriel aux huiles essentielles. Gestes lents et enveloppants pour libérer les tensions et apaiser le mental.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">60 min · 90 min</span>
+            <span class="prestation-price">À partir de 350 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+      <!-- 2 -->
+      <a href="reserver.html?prestation=pierres-chaudes" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">02</div>
+          <div class="prestation-category">Chaleur Thérapeutique</div>
+          <h3 class="prestation-name">Pierres Chaudes</h3>
+          <p class="prestation-desc">Les pierres volcaniques basaltiques, chauffées et glissées sur le corps, dissolvent les contractures et procurent une chaleur profonde et bienveillante.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">90 min</span>
+            <span class="prestation-price">À partir de 500 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+      <!-- 3 -->
+      <a href="reserver.html?prestation=ritual-hammam" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">03</div>
+          <div class="prestation-category">Tradition Marocaine</div>
+          <h3 class="prestation-name">Rituel Hammam</h3>
+          <p class="prestation-desc">L'authenticité du hammam marocain chez vous. Gommage au savon beldi, argile rhassoul purifiante et huile d'argan précieuse.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">90 min · 120 min</span>
+            <span class="prestation-price">À partir de 450 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+      <!-- 4 -->
+      <a href="reserver.html?prestation=massage-sportif" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">04</div>
+          <div class="prestation-category">Sport & Récupération</div>
+          <h3 class="prestation-name">Massage Sportif</h3>
+          <p class="prestation-desc">Techniques de drainage et pressions profondes ciblant les groupes musculaires sollicités. Idéal avant ou après l'effort.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">60 min · 90 min</span>
+            <span class="prestation-price">À partir de 400 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+      <!-- 5 — featured dark -->
+      <a href="reserver.html?prestation=massage-duo" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">05</div>
+          <div class="prestation-category">Expérience Partagée</div>
+          <h3 class="prestation-name">Massage Duo</h3>
+          <p class="prestation-desc">Deux thérapeutes, une même harmonie. Offrez-vous un moment d'exception à deux, en parfaite synchronie et quiétude.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">90 min</span>
+            <span class="prestation-price">À partir de 700 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+      <!-- 6 -->
+      <a href="reserver.html?prestation=massage-prenatal" class="prestation-card">
+        <div class="prestation-card-inner">
+          <div class="prestation-num">06</div>
+          <div class="prestation-category">Maternité & Douceur</div>
+          <h3 class="prestation-name">Massage Prénatal</h3>
+          <p class="prestation-desc">Un soin spécialement adapté aux futures mamans. Gestes doux et position sécurisée pour soulager les inconforts de la grossesse.</p>
+          <div class="prestation-meta">
+            <span class="prestation-duration">60 min</span>
+            <span class="prestation-price">À partir de 400 MAD</span>
+          </div>
+          <span class="prestation-link">Réserver ce soin</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ────────────────────────────────────────── -->
+<section id="process" class="process">
+  <div class="section-header" style="padding-bottom:0">
+    <p class="section-eyebrow">Comment ça marche</p>
+    <h2 class="section-title">Simple comme<br /><em>un souffle</em></h2>
+    <div class="section-rule">
+      <div class="section-rule-diamond"></div>
+    </div>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <span class="step-num">01</span>
+      <div class="step-icon">◇</div>
+      <h3 class="step-title">Choisissez votre soin</h3>
+      <p class="step-desc">Parcourez nos prestations et sélectionnez celle qui correspond à vos besoins du moment.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">02</span>
+      <div class="step-icon">◈</div>
+      <h3 class="step-title">Réservez via WhatsApp</h3>
+      <p class="step-desc">Choisissez votre créneau et confirmez votre réservation en quelques secondes via WhatsApp.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">03</span>
+      <div class="step-icon">◉</div>
+      <h3 class="step-title">Nous arrivons chez vous</h3>
+      <p class="step-desc">Notre thérapeute se déplace à votre adresse avec tout l'équipement nécessaire à l'heure choisie.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">04</span>
+      <div class="step-icon">✦</div>
+      <h3 class="step-title">Profitez pleinement</h3>
+      <p class="step-desc">Détendez-vous sans contrainte. Restez dans votre bulle bien après le soin, chez vous.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ────────────────────────────────────────────── -->
+<section class="cta-banner">
+  <h2>Prêt à vous offrir<br /><em>un moment d'exception</em>&nbsp;?</h2>
+  <p>Disponible 7 jours sur 7 à Marrakech et ses environs</p>
+  <a href="reserver.html" class="cta-btn">Réserver maintenant</a>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">Māssaji</div>
+      <p class="footer-brand-desc">Service de massage à domicile de luxe à Marrakech. L'excellence du bien-être, dans la sérénité de votre espace.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Prestations</div>
+      <ul class="footer-links">
+        <li><a href="reserver.html?prestation=massage-relaxant">Massage Relaxant</a></li>
+        <li><a href="reserver.html?prestation=pierres-chaudes">Pierres Chaudes</a></li>
+        <li><a href="reserver.html?prestation=ritual-hammam">Rituel Hammam</a></li>
+        <li><a href="reserver.html?prestation=massage-sportif">Massage Sportif</a></li>
+        <li><a href="reserver.html?prestation=massage-duo">Massage Duo</a></li>
+        <li><a href="reserver.html?prestation=massage-prenatal">Massage Prénatal</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="reserver.html">Réserver</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Māssaji. Tous droits réservés.</span>
+    <span class="footer-city">Marrakech, Maroc</span>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+</script>
+</body>
+</html>
