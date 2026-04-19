@@ -704,6 +704,7 @@
       const radio = document.getElementById(PRESTATION_MAP[param]);
       if (radio) {
         radio.checked = true;
+        updateDurations();
         updateSummary();
       }
     }
@@ -715,15 +716,36 @@
 
     // Live listeners
     document.querySelectorAll('input[name="prestation"]').forEach(r =>
-      r.addEventListener('change', updateSummary));
+      r.addEventListener('change', () => { updateDurations(); updateSummary(); }));
     document.querySelectorAll('input[name="duree"]').forEach(r =>
       r.addEventListener('change', updateSummary));
     document.getElementById('date').addEventListener('input', updateSummary);
     document.getElementById('heure').addEventListener('change', updateSummary);
     document.getElementById('adresse').addEventListener('input', updateSummary);
 
+    updateDurations();
     updateSummary();
   });
+
+  // ─── Désactiver les durées inférieures à la base ─────
+  function updateDurations() {
+    const prestationEl = document.querySelector('input[name="prestation"]:checked');
+    const baseMin = prestationEl ? parseInt(prestationEl.dataset.baseMin) : 60;
+    const durations = { d60: 60, d90: 90, d120: 120 };
+
+    Object.entries(durations).forEach(([id, min]) => {
+      const input = document.getElementById(id);
+      const label = document.querySelector(`label[for="${id}"]`);
+      const disabled = min < baseMin;
+      input.disabled = disabled;
+      label.style.opacity = disabled ? '0.3' : '';
+      label.style.cursor  = disabled ? 'not-allowed' : '';
+      // Si la durée actuellement cochée est désactivée, basculer sur la base
+      if (disabled && input.checked) {
+        document.getElementById(baseMin === 90 ? 'd90' : 'd60').checked = true;
+      }
+    });
+  }
 
   // ─── Live summary ────────────────────────────────────
   function updateSummary() {
