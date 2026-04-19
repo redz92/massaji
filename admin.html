@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Māssaji</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sage:        #8B9A78;
+      --sage-dark:   #5E6F50;
+      --sage-deeper: #3D4D33;
+      --sage-light:  #EBF0E4;
+      --cream:       #F5F0E6;
+      --gold:        #C8A96E;
+      --charcoal:    #2A2A26;
+      --white:       #FAFAF5;
+      --bg:          #F4F5F2;
+      --status-wait: #C8A96E;
+      --status-ok:   #8B9A78;
+      --status-off:  #C4735A;
+    }
+    body { font-family: 'Raleway', sans-serif; background: var(--bg); color: var(--charcoal); min-height: 100vh; }
+
+    /* ── LOGIN ─────────────────────────────────────────── */
+    .login-screen {
+      min-height: 100vh;
+      background: var(--sage-deeper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-box {
+      background: var(--white);
+      padding: 56px 48px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    .login-brand {
+      margin-bottom: 36px;
+    }
+    .login-monogram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      background: var(--sage-deeper);
+      margin-bottom: 12px;
+    }
+    .login-monogram svg { width: 32px; height: 32px; }
+    .login-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--charcoal);
+    }
+    .login-box h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .login-box p {
+      font-size: 12px;
+      font-weight: 300;
+      color: #9A9A8E;
+      margin-bottom: 36px;
+      letter-spacing: 0.5px;
+    }
+    .login-field { margin-bottom: 2px; text-align: left; }
+    .login-field label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 6px;
+    }
+    .login-field input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--cream);
+      border: none;
+      border-bottom: 1px solid transparent;
+      font-family: 'Raleway', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .login-field input:focus {
+      background: var(--sage-light);
+      border-bottom-color: var(--sage);
+    }
+    .login-error {
+      font-size: 12px;
+      color: var(--status-off);
+      min-height: 20px;
+      margin: 12px 0 4px;
+      text-align: left;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 15px;
+      background: var(--sage-deeper);
+      color: var(--cream);
+      border: none;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .login-btn:hover { background: var(--sage-dark); }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── DASHBOARD LAYOUT ──────────────────────────────── */
+    .dashboard { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--sage-deeper);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 10;
+    }
+    .sidebar-header {
+      padding: 32px 28px 28px;
+      border-bottom: 1px solid rgba(245,240,230,0.08);
+    }
+    .sidebar-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--cream);
+    }
+    .sidebar-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.3);
+      margin-top: 4px;
+    }
+    .sidebar-nav {
+      flex: 1;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 14px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      color: rgba(245,240,230,0.55);
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .filter-btn:hover { background: rgba(245,240,230,0.06); color: var(--cream); }
+    .filter-btn.active {
+      background: rgba(245,240,230,0.1);
+      color: var(--cream);
+      border-left: 2px solid var(--gold);
+    }
+    .filter-icon { font-size: 8px; color: var(--gold); width: 12px; }
+    .filter-badge {
+      margin-left: auto;
+      background: rgba(245,240,230,0.1);
+      color: rgba(245,240,230,0.6);
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      min-width: 22px;
+      text-align: center;
+    }
+    .filter-btn.active .filter-badge { background: var(--gold); color: var(--sage-deeper); }
+
+    .sidebar-footer {
+      padding: 20px 16px;
+      border-top: 1px solid rgba(245,240,230,0.08);
+    }
+    .user-info {
+      font-size: 11px;
+      color: rgba(245,240,230,0.35);
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+    .logout-btn {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid rgba(245,240,230,0.15);
+      color: rgba(245,240,230,0.5);
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover { border-color: rgba(245,240,230,0.4); color: var(--cream); }
+
+    /* Main */
+    .main-content {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .main-header {
+      background: var(--white);
+      padding: 24px 40px;
+      border-bottom: 1px solid rgba(139,154,120,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .main-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--charcoal);
+    }
+    .main-header-date {
+      font-size: 12px;
+      color: #9A9A8E;
+      margin-top: 3px;
+      font-weight: 300;
+    }
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: #9A9A8E;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--sage);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      padding: 28px 40px;
+    }
+    .stat-card {
+      background: var(--white);
+      padding: 24px 24px 20px;
+    }
+    .stat-card.accent { background: var(--sage-deeper); }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-card.accent .stat-num { color: var(--gold); }
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #AAAA9E;
+    }
+    .stat-card.accent .stat-label { color: rgba(245,240,230,0.4); }
+
+    /* Reservation list */
+    .list-wrap { padding: 0 40px 60px; }
+
+    .list-empty {
+      background: var(--white);
+      padding: 60px;
+      text-align: center;
+    }
+    .list-empty-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      color: rgba(139,154,120,0.2);
+      margin-bottom: 16px;
+    }
+    .list-empty-text {
+      font-size: 14px;
+      color: #AAAA9E;
+      font-weight: 300;
+    }
+
+    .loading-state {
+      padding: 60px;
+      text-align: center;
+      font-size: 13px;
+      color: #AAAA9E;
+      letter-spacing: 1px;
+    }
+
+    /* Reservation card */
+    .res-card {
+      background: var(--white);
+      margin-bottom: 2px;
+      border-left: 3px solid transparent;
+      transition: border-color 0.3s;
+      position: relative;
+    }
+    .res-card.status-en_attente { border-left-color: var(--status-wait); }
+    .res-card.status-confirmé   { border-left-color: var(--status-ok); }
+    .res-card.status-annulé     { border-left-color: var(--status-off); opacity: 0.65; }
+
+    .res-card-inner {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Date column */
+    .res-date-col {
+      text-align: center;
+      padding-top: 2px;
+    }
+    .res-day-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+    .res-month {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-top: 2px;
+    }
+    .res-heure {
+      font-size: 12px;
+      color: #AAAA9E;
+      margin-top: 8px;
+    }
+
+    /* Info column */
+    .res-info {}
+    .res-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .res-soin {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--charcoal);
+    }
+    .badge-new {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--white);
+      padding: 2px 8px;
+    }
+    .res-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+      font-weight: 300;
+      color: #7A7A6E;
+      margin-bottom: 8px;
+    }
+    .res-meta span { display: flex; align-items: center; gap: 5px; }
+    .res-meta-icon {
+      width: 14px;
+      height: 1px;
+      background: var(--gold);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .res-notes {
+      font-size: 12px;
+      font-style: italic;
+      color: #AAAA9E;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--sage-light);
+    }
+
+    /* Actions column */
+    .res-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .res-prix {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--sage-dark);
+      white-space: nowrap;
+    }
+    .res-duree {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: #AAAA9E;
+    }
+    .status-select {
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      padding: 8px 28px 8px 12px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23fff' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      outline: none;
+      transition: opacity 0.2s;
+    }
+    .status-select:hover { opacity: 0.85; }
+    .status-select.en_attente { background-color: var(--status-wait); color: #fff; }
+    .status-select.confirmé   { background-color: var(--status-ok);   color: #fff; }
+    .status-select.annulé     { background-color: var(--status-off);  color: #fff; }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .res-card-inner { grid-template-columns: 80px 1fr; }
+      .res-actions { grid-column: 2; flex-direction: row; align-items: center; }
+    }
+    @media (max-width: 700px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .main-content { margin-left: 0; }
+      .stats-row { padding: 16px; }
+      .list-wrap { padding: 0 16px 40px; }
+      .main-header { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ───────────────────────────────────────────── -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-brand">
+      <div class="login-monogram">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 32 L8 14 L15 24 L22 14 L29 24 L36 14 L36 32" stroke="#F5F0E6" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 12 C10 8 14 7 16 10 L22 20 L28 10 C30 7 34 8 36 12" stroke="#F5F0E6" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="login-brand-name">Māssaji</div>
+    </div>
+    <h1>Espace Administration</h1>
+    <p>Connectez-vous pour accéder à vos réservations</p>
+    <form id="loginForm">
+      <div class="login-field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required autocomplete="email" placeholder="admin@massaji.com" />
+      </div>
+      <div class="login-field" style="margin-top:2px">
+        <label for="loginPassword">Mot de passe</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="••••••••" />
+      </div>
+      <div id="loginError" class="login-error"></div>
+      <button type="submit" class="login-btn" id="loginBtn">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ────────────────────────────────────────── -->
+<div class="dashboard" id="dashboard" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">Māssaji</div>
+      <div class="sidebar-label">Administration</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="filter-btn active" data-filter="today">
+        <span class="filter-icon">◆</span>
+        Aujourd'hui
+        <span class="filter-badge" id="badge-today">0</span>
+      </button>
+      <button class="filter-btn" data-filter="week">
+        <span class="filter-icon">◈</span>
+        Cette semaine
+        <span class="filter-badge" id="badge-week">0</span>
+      </button>
+      <button class="filter-btn" data-filter="month">
+        <span class="filter-icon">◉</span>
+        Ce mois
+        <span class="filter-badge" id="badge-month">0</span>
+      </button>
+      <button class="filter-btn" data-filter="all">
+        <span class="filter-icon">○</span>
+        Toutes
+        <span class="filter-badge" id="badge-all">0</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info" id="userEmail">—</div>
+      <button class="logout-btn" id="logoutBtn">Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    <header class="main-header">
+      <div>
+        <h1 id="viewTitle">Aujourd'hui</h1>
+        <div class="main-header-date" id="viewDate"></div>
+      </div>
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        Temps réel
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="statToday">0</div>
+        <div class="stat-label">Aujourd'hui</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statWeek">0</div>
+        <div class="stat-label">Cette semaine</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statMonth">0</div>
+        <div class="stat-label">Ce mois</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-num" id="statRevenue">0</div>
+        <div class="stat-label">MAD ce mois</div>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div class="list-wrap">
+      <div id="reservationList">
+        <div class="loading-state">Chargement des réservations…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ══════════════════════════════════════════════════════
+  //  CONFIG — Remplacez par vos valeurs Supabase
+  // ══════════════════════════════════════════════════════
+  const SUPABASE_URL      = 'https://VOTRE_PROJET.supabase.co';
+  const SUPABASE_ANON_KEY = 'VOTRE_CLE_ANON';
+  // ══════════════════════════════════════════════════════
+
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let allReservations = [];
+  let currentFilter   = 'today';
+
+  // ── Date helpers ────────────────────────────────────────
+  const isoToday = () => new Date().toISOString().split('T')[0];
+
+  function isoWeekStart() {
+    const d   = new Date();
+    const day = d.getDay() === 0 ? 7 : d.getDay(); // Mon=1, Sun=7
+    d.setDate(d.getDate() - day + 1);
+    return d.toISOString().split('T')[0];
+  }
+
+  function isoMonthStart() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+  }
+
+  function filterList(filter) {
+    const t  = isoToday();
+    const ws = isoWeekStart();
+    const ms = isoMonthStart();
+    switch (filter) {
+      case 'today': return allReservations.filter(r => r.date === t);
+      case 'week':  return allReservations.filter(r => r.date >= ws && r.date <= t);
+      case 'month': return allReservations.filter(r => r.date >= ms);
+      default:      return allReservations;
+    }
+  }
+
+  function isNew(r) {
+    return (Date.now() - new Date(r.created_at).getTime()) < 24 * 3600 * 1000;
+  }
+
+  // ── Auth ────────────────────────────────────────────────
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginError');
+    btn.disabled = true;
+    btn.textContent = 'Connexion…';
+    err.textContent = '';
+
+    const { error } = await db.auth.signInWithPassword({
+      email:    document.getElementById('loginEmail').value,
+      password: document.getElementById('loginPassword').value,
+    });
+
+    if (error) {
+      err.textContent = 'Email ou mot de passe incorrect.';
+      btn.disabled = false;
+      btn.textContent = 'Se connecter';
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await db.auth.signOut();
+  });
+
+  db.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display   = 'flex';
+      document.getElementById('userEmail').textContent = session.user.email;
+      init();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('dashboard').style.display   = 'none';
+    }
+  });
+
+  // ── Data ────────────────────────────────────────────────
+  async function fetchReservations() {
+    const { data, error } = await db
+      .from('reservations')
+      .select('*')
+      .order('date', { ascending: false })
+      .order('heure', { ascending: true });
+
+    if (error) { console.error(error); return; }
+    allReservations = data || [];
+    renderAll();
+  }
+
+  async function updateStatus(id, statut) {
+    const { error } = await db.from('reservations').update({ statut }).eq('id', id);
+    if (error) { console.error(error); return; }
+    const r = allReservations.find(r => r.id === id);
+    if (r) { r.statut = statut; renderAll(); }
+  }
+
+  // ── Real-time ───────────────────────────────────────────
+  function subscribeRealtime() {
+    db.channel('reservations-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, () => {
+        fetchReservations();
+      })
+      .subscribe();
+  }
+
+  // ── Render ──────────────────────────────────────────────
+  const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const FILTERS_LABEL = {
+    today: "Aujourd'hui",
+    week:  'Cette semaine',
+    month: 'Ce mois',
+    all:   'Toutes les réservations',
+  };
+
+  function renderAll() {
+    renderStats();
+    renderBadges();
+    renderList();
+    renderHeader();
+  }
+
+  function renderHeader() {
+    document.getElementById('viewTitle').textContent = FILTERS_LABEL[currentFilter];
+    const now = new Date();
+    document.getElementById('viewDate').textContent =
+      now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+         .replace(/^\w/, c => c.toUpperCase());
+  }
+
+  function renderStats() {
+    const t  = isoToday();
+    const ws = isoWeekStart();
+    const ms = isoMonthStart();
+
+    const todayList  = allReservations.filter(r => r.date === t);
+    const weekList   = allReservations.filter(r => r.date >= ws && r.date <= t);
+    const monthList  = allReservations.filter(r => r.date >= ms);
+    const revenue    = monthList.filter(r => r.statut !== 'annulé').reduce((s, r) => s + (r.prix || 0), 0);
+
+    document.getElementById('statToday').textContent   = todayList.length;
+    document.getElementById('statWeek').textContent    = weekList.length;
+    document.getElementById('statMonth').textContent   = monthList.length;
+    document.getElementById('statRevenue').textContent = revenue.toLocaleString('fr-FR') + ' MAD';
+  }
+
+  function renderBadges() {
+    const t  = isoToday();
+    const ws = isoWeekStart();
+    const ms = isoMonthStart();
+    document.getElementById('badge-today').textContent = allReservations.filter(r => r.date === t).length;
+    document.getElementById('badge-week').textContent  = allReservations.filter(r => r.date >= ws && r.date <= t).length;
+    document.getElementById('badge-month').textContent = allReservations.filter(r => r.date >= ms).length;
+    document.getElementById('badge-all').textContent   = allReservations.length;
+  }
+
+  function renderList() {
+    const list      = filterList(currentFilter);
+    const container = document.getElementById('reservationList');
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="list-empty">
+          <div class="list-empty-icon">∅</div>
+          <div class="list-empty-text">Aucune réservation pour cette période</div>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(r => {
+      const dateObj   = new Date(r.date + 'T00:00:00');
+      const dayNum    = dateObj.getDate();
+      const monthStr  = MONTHS_FR[dateObj.getMonth()];
+      const client    = [r.prenom, r.nom].filter(Boolean).join(' ') || '—';
+      const statusOpts = ['en_attente','confirmé','annulé'].map(s =>
+        `<option value="${s}" ${r.statut === s ? 'selected' : ''}>${{
+          en_attente: 'En attente',
+          confirmé:   'Confirmé',
+          annulé:     'Annulé',
+        }[s]}</option>`
+      ).join('');
+
+      return `
+        <div class="res-card status-${r.statut}" id="card-${r.id}">
+          <div class="res-card-inner">
+            <div class="res-date-col">
+              <div class="res-day-num">${dayNum}</div>
+              <div class="res-month">${monthStr}</div>
+              <div class="res-heure">${r.heure}</div>
+            </div>
+            <div class="res-info">
+              <div class="res-top">
+                <span class="res-soin">${r.prestation}</span>
+                ${isNew(r) ? '<span class="badge-new">Nouveau</span>' : ''}
+              </div>
+              <div class="res-meta">
+                <span><span class="res-meta-icon"></span>${client}</span>
+                ${r.telephone ? `<span><span class="res-meta-icon"></span>${r.telephone}</span>` : ''}
+                <span><span class="res-meta-icon"></span>${r.adresse}</span>
+              </div>
+              ${r.notes ? `<div class="res-notes">"${r.notes}"</div>` : ''}
+            </div>
+            <div class="res-actions">
+              <div>
+                <div class="res-prix">${r.prix} MAD</div>
+                <div class="res-duree">${r.duree}</div>
+              </div>
+              <select class="status-select ${r.statut}" onchange="updateStatus('${r.id}', this.value); this.className='status-select ' + this.value;">
+                ${statusOpts}
+              </select>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Filter buttons ──────────────────────────────────────
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderAll();
+    });
+  });
+
+  // ── Init ────────────────────────────────────────────────
+  function init() {
+    fetchReservations();
+    subscribeRealtime();
+  }
+</script>
+</body>
+</html>

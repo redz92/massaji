@@ -6,6 +6,7 @@
   <title>Réserver — Māssaji</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -684,6 +685,15 @@
 </main>
 
 <script>
+  // ══════════════════════════════════════════════════════
+  //  CONFIG SUPABASE — Remplacez par vos valeurs
+  // ══════════════════════════════════════════════════════
+  const SUPABASE_URL      = 'https://VOTRE_PROJET.supabase.co';
+  const SUPABASE_ANON_KEY = 'VOTRE_CLE_ANON';
+  // ══════════════════════════════════════════════════════
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   // ─── Pre-select from URL param ──────────────────────
   const PRESTATION_MAP = {
     'massage-relaxant': 'p1',
@@ -833,6 +843,18 @@
     if (prenom || nom) message += `✦ Nom : ${[prenom, nom].filter(Boolean).join(' ')}\n`;
     if (telephone) message += `✦ Téléphone : ${telephone}\n`;
     if (notes) message += `\nNotes : ${notes}`;
+
+    // ── Sauvegarde dans Supabase (arrière-plan) ──────────
+    db.from('reservations').insert([{
+      prestation, duree: duree || 'À confirmer',
+      prix:      totalPrice2,
+      prenom,    nom,   telephone,
+      date:      dateVal,
+      heure,     adresse, notes,
+      statut:    'en_attente',
+    }]).then(({ error }) => {
+      if (error) console.error('Supabase:', error);
+    });
 
     // ← Remplacez XXXXXXXXXXX par le numéro WhatsApp Business (format international, sans +)
     const WHATSAPP_NUMBER = 'XXXXXXXXXXX';
