@@ -492,7 +492,7 @@
       <div class="prestation-selector" id="prestationSelector">
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p1" value="Massage Relaxant" data-price="350" data-duration="60 min">
+          <input type="radio" name="prestation" id="p1" value="Massage Relaxant" data-price="350" data-duration="60 min" data-base-min="60">
           <label for="p1">
             <div class="option-name">Massage Relaxant</div>
             <div class="option-duration">60 min · 90 min</div>
@@ -502,7 +502,7 @@
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p2" value="Pierres Chaudes" data-price="500" data-duration="90 min">
+          <input type="radio" name="prestation" id="p2" value="Pierres Chaudes" data-price="500" data-duration="90 min" data-base-min="90">
           <label for="p2">
             <div class="option-name">Pierres Chaudes</div>
             <div class="option-duration">90 min</div>
@@ -512,7 +512,7 @@
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p3" value="Rituel Hammam" data-price="450" data-duration="90 min">
+          <input type="radio" name="prestation" id="p3" value="Rituel Hammam" data-price="450" data-duration="90 min" data-base-min="90">
           <label for="p3">
             <div class="option-name">Rituel Hammam</div>
             <div class="option-duration">90 min · 120 min</div>
@@ -522,7 +522,7 @@
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p4" value="Massage Sportif" data-price="400" data-duration="60 min">
+          <input type="radio" name="prestation" id="p4" value="Massage Sportif" data-price="400" data-duration="60 min" data-base-min="60">
           <label for="p4">
             <div class="option-name">Massage Sportif</div>
             <div class="option-duration">60 min · 90 min</div>
@@ -532,7 +532,7 @@
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p5" value="Massage Duo" data-price="700" data-duration="90 min">
+          <input type="radio" name="prestation" id="p5" value="Massage Duo" data-price="700" data-duration="90 min" data-base-min="90">
           <label for="p5">
             <div class="option-name">Massage Duo</div>
             <div class="option-duration">90 min</div>
@@ -542,7 +542,7 @@
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p6" value="Massage Prénatal" data-price="400" data-duration="60 min">
+          <input type="radio" name="prestation" id="p6" value="Massage Prénatal" data-price="400" data-duration="60 min" data-base-min="60">
           <label for="p6">
             <div class="option-name">Massage Prénatal</div>
             <div class="option-duration">60 min</div>
@@ -754,10 +754,15 @@
     set('sum-heure', heureEl.value || '');
     set('sum-adresse', adresseEl.value.trim() || '');
 
-    // Price
+    // Price — base + 100 MAD per extra 30 min
     const priceEl = document.getElementById('sum-price');
     if (prestationEl) {
-      priceEl.textContent = 'À partir de ' + prestationEl.dataset.price + ' MAD';
+      const basePrice   = parseInt(prestationEl.dataset.price);
+      const baseMin     = parseInt(prestationEl.dataset.baseMin);
+      const selectedMin = dureeEl ? parseInt(dureeEl.value) : baseMin;
+      const extraBlocks = Math.max(0, (selectedMin - baseMin) / 30);
+      const totalPrice  = basePrice + extraBlocks * 100;
+      priceEl.textContent = totalPrice + ' MAD';
       priceEl.classList.remove('empty');
     } else {
       priceEl.textContent = '—';
@@ -787,10 +792,19 @@
       weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
     });
 
+    const prestationEl2 = document.querySelector('input[name="prestation"]:checked');
+    const dureeEl2      = document.querySelector('input[name="duree"]:checked');
+    const basePrice2    = parseInt(prestationEl2?.dataset.price || 0);
+    const baseMin2      = parseInt(prestationEl2?.dataset.baseMin || 0);
+    const selectedMin2  = dureeEl2 ? parseInt(dureeEl2.value) : baseMin2;
+    const extraBlocks2  = Math.max(0, (selectedMin2 - baseMin2) / 30);
+    const totalPrice2   = basePrice2 + extraBlocks2 * 100;
+
     let message = `Bonjour Māssaji 🌿\n\n`;
     message += `Je souhaite réserver le soin suivant :\n\n`;
     message += `✦ Soin : ${prestation}\n`;
     message += `✦ Durée : ${duree || 'À confirmer'}\n`;
+    message += `✦ Tarif : ${totalPrice2} MAD\n`;
     message += `✦ Date : ${dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1)}\n`;
     message += `✦ Heure : ${heure}\n`;
     message += `✦ Adresse : ${adresse}\n`;
