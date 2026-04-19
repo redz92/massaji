@@ -493,62 +493,80 @@
       <div class="prestation-selector" id="prestationSelector">
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p1" value="Massage Relaxant" data-price="350" data-duration="60 min" data-base-min="60">
+          <input type="radio" name="prestation" id="p1" value="Thaï Massage"
+            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
           <label for="p1">
-            <div class="option-name">Massage Relaxant</div>
-            <div class="option-duration">60 min · 90 min</div>
-            <div class="option-price">À partir de 350 MAD</div>
+            <div class="option-name">Thaï Massage</div>
+            <div class="option-duration">60 · 90 · 120 min</div>
+            <div class="option-price">À partir de 500 DH</div>
             <div class="option-check"></div>
           </label>
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p2" value="Pierres Chaudes" data-price="500" data-duration="90 min" data-base-min="90">
+          <input type="radio" name="prestation" id="p2" value="Massage Signature Relaxant"
+            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
           <label for="p2">
-            <div class="option-name">Pierres Chaudes</div>
-            <div class="option-duration">90 min</div>
-            <div class="option-price">À partir de 500 MAD</div>
+            <div class="option-name">Massage Signature Relaxant</div>
+            <div class="option-duration">60 · 90 · 120 min</div>
+            <div class="option-price">À partir de 500 DH</div>
             <div class="option-check"></div>
           </label>
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p3" value="Rituel Hammam" data-price="450" data-duration="90 min" data-base-min="90">
+          <input type="radio" name="prestation" id="p3" value="Deep Tissue"
+            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
           <label for="p3">
-            <div class="option-name">Rituel Hammam</div>
-            <div class="option-duration">90 min · 120 min</div>
-            <div class="option-price">À partir de 450 MAD</div>
+            <div class="option-name">Deep Tissue</div>
+            <div class="option-duration">60 · 90 · 120 min</div>
+            <div class="option-price">À partir de 500 DH</div>
             <div class="option-check"></div>
           </label>
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p4" value="Massage Sportif" data-price="400" data-duration="60 min" data-base-min="60">
+          <input type="radio" name="prestation" id="p4" value="Massage aux Huiles Essentielles"
+            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
           <label for="p4">
-            <div class="option-name">Massage Sportif</div>
-            <div class="option-duration">60 min · 90 min</div>
-            <div class="option-price">À partir de 400 MAD</div>
+            <div class="option-name">Massage aux Huiles Essentielles</div>
+            <div class="option-duration">60 · 90 · 120 min</div>
+            <div class="option-price">À partir de 500 DH</div>
             <div class="option-check"></div>
           </label>
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p5" value="Massage Duo" data-price="700" data-duration="90 min" data-base-min="90">
+          <input type="radio" name="prestation" id="p5" value="Prénatal"
+            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
           <label for="p5">
-            <div class="option-name">Massage Duo</div>
-            <div class="option-duration">90 min</div>
-            <div class="option-price">À partir de 700 MAD</div>
+            <div class="option-name">Prénatal</div>
+            <div class="option-duration">60 · 90 · 120 min</div>
+            <div class="option-price">À partir de 500 DH</div>
             <div class="option-check"></div>
           </label>
         </div>
 
         <div class="prestation-option">
-          <input type="radio" name="prestation" id="p6" value="Massage Prénatal" data-price="400" data-duration="60 min" data-base-min="60">
+          <input type="radio" name="prestation" id="p6" value="Formule Duo"
+            data-base-min="60" data-p60="900" data-p90="1300" data-p120="0">
           <label for="p6">
-            <div class="option-name">Massage Prénatal</div>
-            <div class="option-duration">60 min</div>
-            <div class="option-price">À partir de 400 MAD</div>
+            <div class="option-name">Formule Duo</div>
+            <div class="option-duration">60 min · 90 min</div>
+            <div class="option-price">À partir de 900 DH</div>
             <div class="option-check"></div>
+          </label>
+        </div>
+
+        <div class="prestation-option" style="grid-column:1/-1">
+          <input type="radio" name="prestation" id="p7" value="Formule Fidélité"
+            data-base-min="60" data-p60="0" data-p90="0" data-p120="0" data-forfait="true">
+          <label for="p7" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div class="option-name">Formule Fidélité · Loyalty Formula</div>
+              <div class="option-duration" style="margin-top:4px;">3 séances (60 min) → 1 400 DH &nbsp;·&nbsp; 5 séances (60 min) → 2 300 DH</div>
+            </div>
+            <div class="option-check" style="position:static;flex-shrink:0;"></div>
           </label>
         </div>
 
@@ -557,16 +575,16 @@
       <!-- Durée -->
       <div class="duration-selector" id="durationSelector">
         <div class="duration-option">
-          <input type="radio" name="duree" id="d60" value="60 min" checked>
-          <label for="d60">60 min</label>
+          <input type="radio" name="duree" id="d60" value="60" checked>
+          <label for="d60">60 min — 500 DH</label>
         </div>
         <div class="duration-option">
-          <input type="radio" name="duree" id="d90" value="90 min">
-          <label for="d90">90 min</label>
+          <input type="radio" name="duree" id="d90" value="90">
+          <label for="d90">90 min — 700 DH</label>
         </div>
         <div class="duration-option">
-          <input type="radio" name="duree" id="d120" value="120 min">
-          <label for="d120">120 min</label>
+          <input type="radio" name="duree" id="d120" value="120">
+          <label for="d120">120 min — 900 DH</label>
         </div>
       </div>
     </div>
@@ -696,12 +714,13 @@
 
   // ─── Pre-select from URL param ──────────────────────
   const PRESTATION_MAP = {
-    'massage-relaxant': 'p1',
-    'pierres-chaudes':  'p2',
-    'ritual-hammam':    'p3',
-    'massage-sportif':  'p4',
-    'massage-duo':      'p5',
-    'massage-prenatal': 'p6',
+    'thai-massage':       'p1',
+    'signature-relaxant': 'p2',
+    'deep-tissue':        'p3',
+    'huiles-essentielles':'p4',
+    'prenatal':           'p5',
+    'duo':                'p6',
+    'fidelite':           'p7',
   };
 
   function getParam(name) {
@@ -737,24 +756,34 @@
     updateSummary();
   });
 
-  // ─── Désactiver les durées inférieures à la base ─────
+  // ─── Mettre à jour les labels de durée selon le soin ─
   function updateDurations() {
-    const prestationEl = document.querySelector('input[name="prestation"]:checked');
-    const baseMin = prestationEl ? parseInt(prestationEl.dataset.baseMin) : 60;
-    const durations = { d60: 60, d90: 90, d120: 120 };
+    const p = document.querySelector('input[name="prestation"]:checked');
+    const isForfait = p?.dataset.forfait === 'true';
+    const isDuo     = p?.value === 'Formule Duo';
+    const durationWrap = document.getElementById('durationSelector');
 
-    Object.entries(durations).forEach(([id, min]) => {
-      const input = document.getElementById(id);
-      const label = document.querySelector(`label[for="${id}"]`);
-      const disabled = min < baseMin;
-      input.disabled = disabled;
-      label.style.opacity = disabled ? '0.3' : '';
-      label.style.cursor  = disabled ? 'not-allowed' : '';
-      // Si la durée actuellement cochée est désactivée, basculer sur la base
-      if (disabled && input.checked) {
-        document.getElementById(baseMin === 90 ? 'd90' : 'd60').checked = true;
-      }
-    });
+    // Masquer le sélecteur pour la formule fidélité
+    durationWrap.style.display = isForfait ? 'none' : 'flex';
+
+    // Duo : 120 min indisponible
+    const d120input = document.getElementById('d120');
+    const d120label = document.querySelector('label[for="d120"]');
+    d120input.disabled    = isDuo;
+    d120label.style.opacity = isDuo ? '0.3' : '';
+    d120label.style.cursor  = isDuo ? 'not-allowed' : '';
+    if (isDuo && d120input.checked) document.getElementById('d60').checked = true;
+
+    // Mettre à jour les labels prix selon le soin sélectionné
+    if (p && !isForfait) {
+      document.querySelector('label[for="d60"]').textContent  = `60 min — ${p.dataset.p60} DH`;
+      document.querySelector('label[for="d90"]').textContent  = `90 min — ${p.dataset.p90} DH`;
+      document.querySelector('label[for="d120"]').textContent = isDuo ? '120 min — N/D' : `120 min — ${p.dataset.p120} DH`;
+    } else if (!isForfait) {
+      document.querySelector('label[for="d60"]').textContent  = '60 min — 500 DH';
+      document.querySelector('label[for="d90"]').textContent  = '90 min — 700 DH';
+      document.querySelector('label[for="d120"]').textContent = '120 min — 900 DH';
+    }
   }
 
   // ─── Live summary ────────────────────────────────────
@@ -786,15 +815,17 @@
     set('sum-heure', heureEl.value || '');
     set('sum-adresse', adresseEl.value.trim() || '');
 
-    // Price — base + 100 MAD per extra 30 min
+    // Prix selon le soin + la durée sélectionnée
     const priceEl = document.getElementById('sum-price');
     if (prestationEl) {
-      const basePrice   = parseInt(prestationEl.dataset.price);
-      const baseMin     = parseInt(prestationEl.dataset.baseMin);
-      const selectedMin = dureeEl ? parseInt(dureeEl.value) : baseMin;
-      const extraBlocks = Math.max(0, (selectedMin - baseMin) / 30);
-      const totalPrice  = basePrice + extraBlocks * 100;
-      priceEl.textContent = totalPrice + ' MAD';
+      const isForfait = prestationEl.dataset.forfait === 'true';
+      if (isForfait) {
+        priceEl.textContent = '1 400 DH · 2 300 DH';
+      } else {
+        const min = dureeEl ? dureeEl.value : '60';
+        const prix = prestationEl.dataset['p' + min] || '—';
+        priceEl.textContent = prix !== '0' ? prix + ' DH' : '—';
+      }
       priceEl.classList.remove('empty');
     } else {
       priceEl.textContent = '—';
@@ -826,17 +857,16 @@
 
     const prestationEl2 = document.querySelector('input[name="prestation"]:checked');
     const dureeEl2      = document.querySelector('input[name="duree"]:checked');
-    const basePrice2    = parseInt(prestationEl2?.dataset.price || 0);
-    const baseMin2      = parseInt(prestationEl2?.dataset.baseMin || 0);
-    const selectedMin2  = dureeEl2 ? parseInt(dureeEl2.value) : baseMin2;
-    const extraBlocks2  = Math.max(0, (selectedMin2 - baseMin2) / 30);
-    const totalPrice2   = basePrice2 + extraBlocks2 * 100;
+    const isForfait2    = prestationEl2?.dataset.forfait === 'true';
+    const min2          = dureeEl2 ? dureeEl2.value : '60';
+    const totalPrice2   = isForfait2 ? 'Formule fidélité' : (prestationEl2?.dataset['p' + min2] || '—') + ' DH';
+    const dureeLabel    = isForfait2 ? 'À préciser' : min2 + ' min';
 
     let message = `Bonjour Māssaji 🌿\n\n`;
     message += `Je souhaite réserver le soin suivant :\n\n`;
     message += `✦ Soin : ${prestation}\n`;
-    message += `✦ Durée : ${duree || 'À confirmer'}\n`;
-    message += `✦ Tarif : ${totalPrice2} MAD\n`;
+    message += `✦ Durée : ${dureeLabel}\n`;
+    message += `✦ Tarif : ${totalPrice2}\n`;
     message += `✦ Date : ${dateFormatted.charAt(0).toUpperCase() + dateFormatted.slice(1)}\n`;
     message += `✦ Heure : ${heure}\n`;
     message += `✦ Adresse : ${adresse}\n`;
@@ -846,12 +876,13 @@
 
     // ── Sauvegarde dans Supabase (arrière-plan) ──────────
     db.from('reservations').insert([{
-      prestation, duree: duree || 'À confirmer',
-      prix:      totalPrice2,
-      prenom,    nom,   telephone,
-      date:      dateVal,
-      heure,     adresse, notes,
-      statut:    'en_attente',
+      prestation,
+      duree:  dureeLabel,
+      prix:   totalPrice2,
+      prenom, nom, telephone,
+      date:   dateVal,
+      heure,  adresse, notes,
+      statut: 'en_attente',
     }]).then(({ error }) => {
       if (error) console.error('Supabase:', error);
     });
