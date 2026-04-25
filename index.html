@@ -111,20 +111,26 @@
       background: var(--sage-deeper);
     }
 
+    /* Photo de fond */
     .hero-bg {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(160deg, rgba(62,77,51,0.95) 0%, rgba(94,111,80,0.75) 50%, rgba(139,154,120,0.6) 100%);
+      background-image: url('A7404910.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
     }
 
-    /* Ornamental line pattern */
+    /* Voile sombre par-dessus la photo pour lisibilité du texte */
     .hero-bg::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image:
-        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,240,230,0.04) 0%, transparent 70%);
+      background:
+        linear-gradient(to bottom,
+          rgba(30, 40, 25, 0.62) 0%,
+          rgba(40, 52, 32, 0.55) 50%,
+          rgba(30, 40, 25, 0.70) 100%);
     }
 
     .hero-content {
