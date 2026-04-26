@@ -716,6 +716,46 @@
       .footer-inner { grid-template-columns: 1fr 1fr; }
     }
 
+    /* ── Formule Fidélité card ─────────────────────────── */
+    .fidelite-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      text-decoration: none;
+      background: var(--sage-deeper);
+    }
+    .fidelite-left  { padding: 48px 48px 44px; }
+    .fidelite-right {
+      padding: 48px 48px 44px;
+      border-left: 1px solid rgba(245,240,230,0.08);
+      display: flex; flex-direction: column;
+      justify-content: center; gap: 16px;
+    }
+    .fidelite-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(245,240,230,0.08);
+      gap: 16px;
+    }
+    .fidelite-label {
+      font-size: 13px; font-weight: 300;
+      color: rgba(245,240,230,0.65);
+      flex: 1;
+    }
+    .fidelite-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; color: var(--gold);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .fidelite-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.5);
+      margin-top: 8px;
+    }
+
     @media (max-width: 768px) {
       nav { padding: 0 24px; }
       .nav-links { display: none; }
@@ -728,6 +768,14 @@
       footer { padding: 48px 24px 32px; }
       .footer-inner { grid-template-columns: 1fr; gap: 40px; }
       .intro { padding: 80px 24px; }
+
+      /* Formule Fidélité — mobile */
+      .fidelite-card { grid-template-columns: 1fr; }
+      .fidelite-left  { padding: 36px 24px 28px; }
+      .fidelite-right { padding: 28px 24px 36px; border-left: none; border-top: 1px solid rgba(245,240,230,0.08); }
+      .fidelite-row   { flex-wrap: nowrap; align-items: center; }
+      .fidelite-label { font-size: 12px; }
+      .fidelite-price { font-size: 22px; }
     }
   </style>
 </head>
@@ -914,22 +962,22 @@
 
     <!-- Formule Fidélité -->
     <div style="max-width:1280px;margin:2px auto 0;">
-      <a href="reserver.html?prestation=fidelite" style="display:grid;grid-template-columns:1fr 1fr;text-decoration:none;background:var(--sage-deeper);">
-        <div style="padding:48px 48px 44px;">
+      <a href="reserver.html?prestation=fidelite" class="fidelite-card">
+        <div class="fidelite-left">
           <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Formule Fidélité · Loyalty Formula</div>
           <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);margin-bottom:16px;">Offrez-vous un abonnement bien-être</h3>
           <p style="font-size:13px;font-weight:300;line-height:1.8;color:rgba(245,240,230,0.65);">Profitez de tarifs préférentiels en réservant plusieurs séances à l'avance.<br/><em>Enjoy preferred rates by booking multiple sessions in advance.</em></p>
         </div>
-        <div style="padding:48px 48px 44px;border-left:1px solid rgba(245,240,230,0.08);display:flex;flex-direction:column;justify-content:center;gap:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(245,240,230,0.08);">
-            <span style="font-size:13px;font-weight:300;color:rgba(245,240,230,0.65);">3 séances · 3 sessions (60 min)</span>
-            <span style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);">1 400 DH</span>
+        <div class="fidelite-right">
+          <div class="fidelite-row">
+            <span class="fidelite-label">3 séances · 3 sessions (60 min)</span>
+            <span class="fidelite-price">1 400 DH</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(245,240,230,0.08);">
-            <span style="font-size:13px;font-weight:300;color:rgba(245,240,230,0.65);">5 séances · 5 sessions (60 min)</span>
-            <span style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);">2 300 DH</span>
+          <div class="fidelite-row">
+            <span class="fidelite-label">5 séances · 5 sessions (60 min)</span>
+            <span class="fidelite-price">2 300 DH</span>
           </div>
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,230,0.5);margin-top:8px;transition:gap 0.3s;">Réserver cette formule <span style="font-size:14px;">→</span></span>
+          <span class="fidelite-cta">Réserver cette formule <span style="font-size:14px;">→</span></span>
         </div>
       </a>
     </div>
