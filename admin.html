@@ -472,6 +472,44 @@
     .status-select.confirmé   { background-color: var(--status-ok);   color: #fff; }
     .status-select.annulé     { background-color: var(--status-off);  color: #fff; }
 
+    /* ── SIDEBAR SEPARATOR ─────────────────────────────── */
+    .sidebar-sep { margin: 12px 16px; border: none; border-top: 1px solid rgba(245,240,230,0.08); }
+    .sidebar-section { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,230,0.2); padding: 8px 14px 4px; }
+
+    /* ── PRESTATIONS PANEL ─────────────────────────────── */
+    .prest-panel { padding: 28px 40px 60px; display: none; }
+    .prest-panel-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--charcoal); }
+    .prest-panel-sub { font-size: 12px; color: #AAAA9E; margin-top: 4px; font-weight: 300; margin-bottom: 28px; }
+    .prest-grid { display: flex; flex-direction: column; gap: 2px; }
+    .prest-card { background: var(--white); border-left: 3px solid var(--sage-light); transition: border-color 0.3s; }
+    .prest-card:hover { border-left-color: var(--sage); }
+    .prest-card.saving { border-left-color: var(--gold); }
+    .prest-card.saved  { border-left-color: var(--status-ok); }
+    .prest-card-inner { padding: 24px 28px; }
+    .prest-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .prest-num { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: rgba(139,154,120,0.25); width: 40px; flex-shrink: 0; }
+    .prest-tag { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; background: var(--bg); color: #AAAA9E; }
+    .prest-tag.duo { color: var(--sage-dark); background: var(--sage-light); }
+    .prest-tag.forfait { color: var(--gold); background: #FDF8F0; }
+    .prest-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .prest-fields.full { grid-template-columns: 1fr; }
+    .field-group { display: flex; flex-direction: column; gap: 5px; }
+    .field-label { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--sage-dark); }
+    .field-input { padding: 10px 14px; background: var(--bg); border: 1px solid transparent; border-bottom: 1px solid rgba(139,154,120,0.2); font-family: 'Raleway', sans-serif; font-size: 14px; font-weight: 300; color: var(--charcoal); outline: none; width: 100%; transition: border-color 0.2s, background 0.2s; }
+    .field-input:focus { background: var(--sage-light); border-bottom-color: var(--sage); }
+    .prix-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+    .prix-field { display: flex; flex-direction: column; gap: 5px; }
+    .prix-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .prix-input { padding: 10px 14px; background: var(--bg); border: 1px solid transparent; border-bottom: 1px solid rgba(200,169,110,0.25); font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--charcoal); outline: none; width: 100%; transition: border-color 0.2s, background 0.2s; }
+    .prix-input:focus { background: #FDF8F0; border-bottom-color: var(--gold); }
+    .prix-input:disabled { opacity: 0.3; cursor: not-allowed; }
+    .prest-card-foot { display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding-top: 14px; border-top: 1px solid var(--sage-light); }
+    .save-btn { padding: 10px 24px; background: var(--sage-deeper); color: var(--cream); border: none; font-family: 'Raleway', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+    .save-btn:hover { background: var(--sage-dark); }
+    .save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .save-feedback { font-size: 11px; letter-spacing: 1px; color: var(--status-ok); opacity: 0; transition: opacity 0.3s; }
+    .save-feedback.show { opacity: 1; }
+
     /* ── RESPONSIVE ────────────────────────────────────── */
     @media (max-width: 900px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -554,6 +592,12 @@
         Toutes
         <span class="filter-badge" id="badge-all">0</span>
       </button>
+      <hr class="sidebar-sep">
+      <div class="sidebar-section">Catalogue</div>
+      <button class="filter-btn" id="prestationsTab">
+        <span class="filter-icon">✦</span>
+        Prestations
+      </button>
     </nav>
     <div class="sidebar-footer">
       <div class="user-info" id="userEmail">—</div>
@@ -595,11 +639,21 @@
     </div>
 
     <!-- List -->
-    <div class="list-wrap">
+    <div class="list-wrap" id="reservationsPanel">
       <div id="reservationList">
         <div class="loading-state">Chargement des réservations…</div>
       </div>
     </div>
+
+    <!-- Prestations panel -->
+    <div class="prest-panel" id="prestationsPanel">
+      <div class="prest-panel-title">Gestion des prestations</div>
+      <div class="prest-panel-sub">Modifiez les noms et tarifs — les changements sont appliqués immédiatement sur la page de réservation.</div>
+      <div class="prest-grid" id="prestGrid">
+        <div class="loading-state">Chargement…</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -824,15 +878,159 @@
     }).join('');
   }
 
-  // ── Filter buttons ──────────────────────────────────────
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+  // ── Filter buttons (réservations) ──────────────────────
+  document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      renderAll();
+      switchView(btn.dataset.filter);
     });
   });
+
+  // ── View switcher ───────────────────────────────────────
+  function switchView(view) {
+    const statsRow    = document.querySelector('.stats-row');
+    const resvPanel   = document.getElementById('reservationsPanel');
+    const prestPanel  = document.getElementById('prestationsPanel');
+    const liveIndic   = document.querySelector('.live-indicator');
+
+    if (view === 'prestations') {
+      statsRow.style.display  = 'none';
+      resvPanel.style.display = 'none';
+      prestPanel.style.display = 'block';
+      liveIndic.style.display = 'none';
+      document.getElementById('viewTitle').textContent = 'Prestations';
+      document.getElementById('viewDate').textContent  = 'Modifier les soins et tarifs';
+      fetchPrestations();
+    } else {
+      statsRow.style.display  = '';
+      resvPanel.style.display = '';
+      prestPanel.style.display = 'none';
+      liveIndic.style.display = '';
+      currentFilter = view;
+      renderAll();
+    }
+  }
+
+  // ── Prestations tab button ──────────────────────────────
+  document.getElementById('prestationsTab').addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('prestationsTab').classList.add('active');
+    switchView('prestations');
+  });
+
+  // ── Prestations : fetch ─────────────────────────────────
+  let allPrestations = [];
+
+  async function fetchPrestations() {
+    const grid = document.getElementById('prestGrid');
+    grid.innerHTML = '<div class="loading-state">Chargement…</div>';
+    const { data, error } = await db
+      .from('prestations')
+      .select('*')
+      .order('ordre', { ascending: true });
+    if (error) { console.error(error); grid.innerHTML = '<div class="loading-state">Erreur de chargement.</div>'; return; }
+    allPrestations = data || [];
+    renderPrestations();
+  }
+
+  // ── Prestations : render ────────────────────────────────
+  function renderPrestations() {
+    const grid = document.getElementById('prestGrid');
+    if (!allPrestations.length) {
+      grid.innerHTML = '<div class="loading-state">Aucune prestation. Vérifiez la table Supabase.</div>';
+      return;
+    }
+    grid.innerHTML = allPrestations.map(p => `
+      <div class="prest-card" id="pcard-${p.id}">
+        <div class="prest-card-inner">
+          <div class="prest-card-head">
+            <span class="prest-num">0${p.ordre}</span>
+            ${p.is_duo     ? '<span class="prest-tag duo">Duo</span>'     : ''}
+            ${p.is_forfait ? '<span class="prest-tag forfait">Forfait</span>' : ''}
+          </div>
+
+          <div class="prest-fields">
+            <div class="field-group">
+              <span class="field-label">Nom (Français)</span>
+              <input class="field-input" data-id="${p.id}" data-field="nom_fr" value="${p.nom_fr}" />
+            </div>
+            <div class="field-group">
+              <span class="field-label">Nom (English)</span>
+              <input class="field-input" data-id="${p.id}" data-field="nom_en" value="${p.nom_en || ''}" />
+            </div>
+          </div>
+
+          ${p.is_forfait ? `
+          <div class="prest-fields full">
+            <div class="field-group">
+              <span class="field-label">Détail forfait</span>
+              <input class="field-input" data-id="${p.id}" data-field="forfait_info"
+                value="${p.forfait_info || ''}"
+                placeholder="ex: 3 séances → 1 400 DH · 5 séances → 2 300 DH" />
+            </div>
+          </div>` : `
+          <div class="prix-row">
+            <div class="prix-field">
+              <span class="prix-label">60 min (DH)</span>
+              <input class="prix-input" type="number" data-id="${p.id}" data-field="prix_60" value="${p.prix_60}" />
+            </div>
+            <div class="prix-field">
+              <span class="prix-label">90 min (DH)</span>
+              <input class="prix-input" type="number" data-id="${p.id}" data-field="prix_90" value="${p.prix_90}" />
+            </div>
+            <div class="prix-field">
+              <span class="prix-label">120 min (DH)</span>
+              <input class="prix-input" type="number" data-id="${p.id}" data-field="prix_120"
+                value="${p.prix_120}" ${p.is_duo ? 'disabled' : ''} />
+            </div>
+          </div>`}
+
+          <div class="prest-card-foot">
+            <span class="save-feedback" id="feedback-${p.id}">✓ Sauvegardé</span>
+            <button class="save-btn" onclick="savePrestation(${p.id})">Sauvegarder</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Prestations : save ──────────────────────────────────
+  async function savePrestation(id) {
+    const card     = document.getElementById(`pcard-${id}`);
+    const btn      = card.querySelector('.save-btn');
+    const feedback = document.getElementById(`feedback-${id}`);
+    const inputs   = card.querySelectorAll('[data-id]');
+
+    btn.disabled = true;
+    card.classList.add('saving');
+
+    const updates = {};
+    inputs.forEach(inp => {
+      updates[inp.dataset.field] = inp.type === 'number'
+        ? (parseInt(inp.value) || 0)
+        : inp.value;
+    });
+
+    const { error } = await db.from('prestations').update(updates).eq('id', id);
+    btn.disabled = false;
+    card.classList.remove('saving');
+
+    if (error) {
+      console.error(error);
+      card.style.borderLeftColor = 'var(--status-off)';
+      setTimeout(() => { card.style.borderLeftColor = ''; }, 2000);
+    } else {
+      card.classList.add('saved');
+      feedback.classList.add('show');
+      const p = allPrestations.find(x => x.id === id);
+      if (p) Object.assign(p, updates);
+      setTimeout(() => {
+        card.classList.remove('saved');
+        feedback.classList.remove('show');
+      }, 2500);
+    }
+  }
 
   // ── Init ────────────────────────────────────────────────
   function init() {

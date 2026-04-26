@@ -510,85 +510,7 @@
     <div class="form-block">
       <h2 class="form-section-title" data-step="01">Choisissez votre soin</h2>
       <div class="prestation-selector" id="prestationSelector">
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p1" value="Thaï Massage"
-            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
-          <label for="p1">
-            <div class="option-name">Thaï Massage</div>
-            <div class="option-duration">60 · 90 · 120 min</div>
-            <div class="option-price">À partir de 500 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p2" value="Massage Signature Relaxant"
-            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
-          <label for="p2">
-            <div class="option-name">Massage Signature Relaxant</div>
-            <div class="option-duration">60 · 90 · 120 min</div>
-            <div class="option-price">À partir de 500 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p3" value="Deep Tissue"
-            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
-          <label for="p3">
-            <div class="option-name">Deep Tissue</div>
-            <div class="option-duration">60 · 90 · 120 min</div>
-            <div class="option-price">À partir de 500 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p4" value="Massage aux Huiles Essentielles"
-            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
-          <label for="p4">
-            <div class="option-name">Massage aux Huiles Essentielles</div>
-            <div class="option-duration">60 · 90 · 120 min</div>
-            <div class="option-price">À partir de 500 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p5" value="Prénatal"
-            data-base-min="60" data-p60="500" data-p90="700" data-p120="900">
-          <label for="p5">
-            <div class="option-name">Prénatal</div>
-            <div class="option-duration">60 · 90 · 120 min</div>
-            <div class="option-price">À partir de 500 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option">
-          <input type="radio" name="prestation" id="p6" value="Formule Duo"
-            data-base-min="60" data-p60="900" data-p90="1300" data-p120="0">
-          <label for="p6">
-            <div class="option-name">Formule Duo</div>
-            <div class="option-duration">60 min · 90 min</div>
-            <div class="option-price">À partir de 900 DH</div>
-            <div class="option-check"></div>
-          </label>
-        </div>
-
-        <div class="prestation-option" style="grid-column:1/-1">
-          <input type="radio" name="prestation" id="p7" value="Formule Fidélité"
-            data-base-min="60" data-p60="0" data-p90="0" data-p120="0" data-forfait="true">
-          <label for="p7" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-            <div>
-              <div class="option-name">Formule Fidélité · Loyalty Formula</div>
-              <div class="option-duration" style="margin-top:4px;">3 séances (60 min) → 1 400 DH &nbsp;·&nbsp; 5 séances (60 min) → 2 300 DH</div>
-            </div>
-            <div class="option-check" style="position:static;flex-shrink:0;"></div>
-          </label>
-        </div>
-
+        <div style="padding:24px;text-align:center;font-size:13px;color:#AAAA9E;letter-spacing:1px;">Chargement des soins…</div>
       </div>
 
       <!-- Durée -->
@@ -745,55 +667,100 @@
   const { createClient } = supabase;
   const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // ─── Pre-select from URL param ──────────────────────
-  const PRESTATION_MAP = {
-    'thai-massage':       'p1',
-    'signature-relaxant': 'p2',
-    'deep-tissue':        'p3',
-    'huiles-essentielles':'p4',
-    'prenatal':           'p5',
-    'duo':                'p6',
-    'fidelite':           'p7',
-  };
-
   function getParam(name) {
     return new URLSearchParams(window.location.search).get(name);
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const param = getParam('prestation');
-    if (param && PRESTATION_MAP[param]) {
-      const radio = document.getElementById(PRESTATION_MAP[param]);
-      if (radio) {
-        radio.checked = true;
-        updateDurations();
-        updateSummary();
-      }
-    }
+  // ─── Données de secours (si Supabase non configuré) ───
+  const FALLBACK_PRESTATIONS = [
+    { id:'p1', ordre:1, nom_fr:'Thaï Massage',                  nom_en:'Thai Massage (without oil)',  prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
+    { id:'p2', ordre:2, nom_fr:'Massage Signature Relaxant',    nom_en:'Signature Relaxing Massage',  prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
+    { id:'p3', ordre:3, nom_fr:'Deep Tissue',                   nom_en:'Deep Tissue Massage',         prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
+    { id:'p4', ordre:4, nom_fr:'Massage aux Huiles Essentielles',nom_en:'Essential Oils Massage',     prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
+    { id:'p5', ordre:5, nom_fr:'Prénatal',                      nom_en:'Prenatal Massage',            prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
+    { id:'p6', ordre:6, nom_fr:'Formule Duo',                   nom_en:'Duo Formula',                 prix_60:900, prix_90:1300,prix_120:0,   is_duo:true,  is_forfait:false, forfait_info:'' },
+    { id:'p7', ordre:7, nom_fr:'Formule Fidélité',              nom_en:'Loyalty Formula',             prix_60:0,   prix_90:0,   prix_120:0,   is_duo:false, is_forfait:true,  forfait_info:'3 séances (60 min) → 1 400 DH · 5 séances (60 min) → 2 300 DH' },
+  ];
 
-    // Set minimum date to today
+  // ─── Chargement et rendu des prestations ──────────────
+  async function loadPrestations() {
+    let prestations = FALLBACK_PRESTATIONS;
+    try {
+      const { data, error } = await db.from('prestations').select('*').eq('actif', true).order('ordre');
+      if (!error && data && data.length) prestations = data;
+    } catch (e) { /* Supabase non configuré — utilisation des données de secours */ }
+
+    const selector = document.getElementById('prestationSelector');
+    selector.innerHTML = prestations.map((p, i) => {
+      const rid = `pr_${p.id}`;
+      if (p.is_forfait) {
+        return `
+        <div class="prestation-option" style="grid-column:1/-1">
+          <input type="radio" name="prestation" id="${rid}" value="${p.nom_fr}"
+            data-base-min="60" data-p60="0" data-p90="0" data-p120="0" data-forfait="true">
+          <label for="${rid}" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div class="option-name">${p.nom_fr} · ${p.nom_en}</div>
+              <div class="option-duration" style="margin-top:4px;">${p.forfait_info}</div>
+            </div>
+            <div class="option-check" style="position:static;flex-shrink:0;"></div>
+          </label>
+        </div>`;
+      }
+      const durations = p.is_duo
+        ? '60 min · 90 min'
+        : `60 · 90 · 120 min`;
+      return `
+      <div class="prestation-option">
+        <input type="radio" name="prestation" id="${rid}" value="${p.nom_fr}"
+          data-base-min="60" data-p60="${p.prix_60}" data-p90="${p.prix_90}" data-p120="${p.prix_120}"
+          ${p.is_duo ? 'data-duo="true"' : ''}>
+        <label for="${rid}">
+          <div class="option-name">${p.nom_fr}</div>
+          <div class="option-duration">${durations}</div>
+          <div class="option-price">À partir de ${p.is_duo ? p.prix_60 : p.prix_60} DH</div>
+          <div class="option-check"></div>
+        </label>
+      </div>`;
+    }).join('');
+
+    // Ré-attacher les listeners après le rendu
+    document.querySelectorAll('input[name="prestation"]').forEach(r =>
+      r.addEventListener('change', () => { updateDurations(); updateSummary(); }));
+
+    // Pre-select from URL param
+    const param = getParam('prestation');
+    if (param) {
+      const allRadios = document.querySelectorAll('input[name="prestation"]');
+      const match = [...allRadios].find(r => r.value.toLowerCase().includes(param.replace(/-/g,' ')));
+      if (match) { match.checked = true; }
+    }
+    updateDurations();
+    updateSummary();
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    // Chargement dynamique des prestations
+    await loadPrestations();
+
+    // Date minimum = aujourd'hui
     const dateInput = document.getElementById('date');
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;
 
-    // Live listeners
-    document.querySelectorAll('input[name="prestation"]').forEach(r =>
-      r.addEventListener('change', () => { updateDurations(); updateSummary(); }));
+    // Listeners fixes
     document.querySelectorAll('input[name="duree"]').forEach(r =>
       r.addEventListener('change', updateSummary));
     document.getElementById('date').addEventListener('input', updateSummary);
     document.getElementById('heure').addEventListener('change', updateSummary);
     document.getElementById('adresse').addEventListener('input', updateSummary);
-
-    updateDurations();
-    updateSummary();
   });
 
   // ─── Mettre à jour les labels de durée selon le soin ─
   function updateDurations() {
     const p = document.querySelector('input[name="prestation"]:checked');
     const isForfait = p?.dataset.forfait === 'true';
-    const isDuo     = p?.value === 'Formule Duo';
+    const isDuo     = p?.dataset.duo === 'true';
     const durationWrap = document.getElementById('durationSelector');
 
     // Masquer le sélecteur pour la formule fidélité
