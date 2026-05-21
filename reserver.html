@@ -680,6 +680,8 @@
     { id:'p5', ordre:5, nom_fr:'Prénatal',                      nom_en:'Prenatal Massage',            prix_60:500, prix_90:700, prix_120:900, is_duo:false, is_forfait:false, forfait_info:'' },
     { id:'p6', ordre:6, nom_fr:'Formule Duo',                   nom_en:'Duo Formula',                 prix_60:900, prix_90:1300,prix_120:0,   is_duo:true,  is_forfait:false, forfait_info:'' },
     { id:'p7', ordre:7, nom_fr:'Formule Fidélité',              nom_en:'Loyalty Formula',             prix_60:0,   prix_90:0,   prix_120:0,   is_duo:false, is_forfait:true,  forfait_info:'3 séances (60 min) → 1 400 DH · 5 séances (60 min) → 2 300 DH' },
+    { id:'p8', ordre:8, nom_fr:'Madérothérapie',               nom_en:'Maderotherapy – Full body',   prix_60:750, prix_90:0,   prix_120:0,   is_duo:false, is_forfait:false, forfait_info:'', is_pack:true, pack_info:'Pack 5 séances — 3 000 DH' },
+    { id:'p9', ordre:9, nom_fr:'Drainage Lymphatique',         nom_en:'Lymphatic Drainage – Full body',prix_60:800,prix_90:0,  prix_120:0,   is_duo:false, is_forfait:false, forfait_info:'', is_pack:true, pack_info:'Pack 5 séances — 3 500 DH' },
   ];
 
   // ─── Chargement et rendu des prestations ──────────────
@@ -707,18 +709,20 @@
           </label>
         </div>`;
       }
-      const durations = p.is_duo
-        ? '60 min · 90 min'
-        : `60 · 90 · 120 min`;
+      const durations = p.is_duo ? '60 min · 90 min' : p.is_pack ? '1 séance' : `60 · 90 · 120 min`;
+      const priceLabel = p.is_pack
+        ? `${p.prix_60} DH`
+        : `À partir de ${p.prix_60} DH`;
       return `
       <div class="prestation-option">
         <input type="radio" name="prestation" id="${rid}" value="${p.nom_fr}"
           data-base-min="60" data-p60="${p.prix_60}" data-p90="${p.prix_90}" data-p120="${p.prix_120}"
-          ${p.is_duo ? 'data-duo="true"' : ''}>
+          ${p.is_duo ? 'data-duo="true"' : ''}
+          ${p.is_pack ? 'data-pack="true"' : ''}>
         <label for="${rid}">
           <div class="option-name">${p.nom_fr}</div>
-          <div class="option-duration">${durations}</div>
-          <div class="option-price">À partir de ${p.is_duo ? p.prix_60 : p.prix_60} DH</div>
+          <div class="option-duration">${durations}${p.is_pack ? ` · ${p.pack_info}` : ''}</div>
+          <div class="option-price">${priceLabel}</div>
           <div class="option-check"></div>
         </label>
       </div>`;
